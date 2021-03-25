@@ -55,9 +55,9 @@
   (same-par a (list) f)))
 
 (define (first-parity a)
-  (if (= (mod (car a) 2) 0)
-  (lambda (x) (= (mod x 2) 0))
-  (lambda (x) (not (= (mod x 2) 0)))))
+  (if (= (remainder (car a) 2) 0)
+  (lambda (x) (= (remainder x 2) 0))
+  (lambda (x) (not (= (remainder x 2) 0)))))
 
 
 (define (same-par list1 list2 f)
@@ -69,6 +69,23 @@
   (if (function a)
     (cons a lista)
     lista))
+
+;2.21 -- square a list with cons and with map
+(define (square-list-cons items)
+(if (null? items)
+    nil
+    (cons ((lambda (x) (* x x)) (car items)) (square-list-cons (cdr items)))))
+
+  
+(define (square-list-map items)
+(map (lambda (x) (* x x))items))
+
+;2.23 - the for each expresion
+;;we use the cond and else expresion because in the else body we can have multiple expresions
+(define (for-each-a proc items)
+  (cond ((null? items) true)
+        (else (proc (car items))
+              (for-each-a proc (cdr items)))))
 
 
 
