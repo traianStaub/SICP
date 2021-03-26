@@ -12,14 +12,11 @@
 
 ;2.18 - reverse lists
 (define (reverse list1)
-  (reversing list1 (list))
-  )
-
-(define (reversing list1 list2)
+  (define (reversing list1 list2)
     (if (null? list1)
        list2
-       (reversing (cdr list1) (cons (car list1) list2))
-  ))
+       (reversing (cdr list1) (cons (car list1) list2))))
+  (reversing list1 (list)))
 
 ;2.19 - coin change
 (define us-coins (list 50 25 10 5 1))
@@ -87,6 +84,23 @@
         (else (proc (car items))
               (for-each-a proc (cdr items)))))
 
+;2.27 - deep reverse: reverse the list that are inside the list
+(define (deep-reverse list1)
+  (define (deep-reversing list1 list2)
+    (cond ((null? list1) list2)
+          ;;if the (car list1) is a pair it means that is a list there it then reverses the list and then reverses the elements
+          ((pair? (car list1)) (deep-reversing (cdr list1) (cons (deep-reversing-inner-list list1) list2))) 
+          ((deep-reversing (cdr list1) (cons (car list1) list2)))))
+  (define (deep-reversing-inner-list items)
+    (deep-reversing (car items) (list)))
+  (deep-reversing list1 (list)))
 
+;;2.28 fringe list - get a tree of lists and return a list tha contains the elements of the list
+(define (fringe items)
+  (define (fringe-inner lista listb)
+  (cond ((null? lista) listb)
+        ((pair? (car lista)) (fringe-inner (cdr lista) (fringe-inner (car lista) listb)))
+        (else (fringe-inner (cdr lista) (cons (car lista) listb)))))
+  (reverse (fringe-inner items '())))
 
 
