@@ -156,10 +156,3 @@
         ;if the above are false the retur true
         (else #t)))
 
-(define tester (make-mobile (make-branch 1 30) (make-branch 1 (make-mobile (make-branch 1 10) (make-branch 1 20)))))
-(define teste-balance (make-mobile (make-branch 1 10) (make-branch 1 10)))
-
-
-(branch-torque (left-branch teste-balance))
-(is-balanced-mobil tester)
-
