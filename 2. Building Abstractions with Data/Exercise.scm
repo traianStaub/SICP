@@ -103,4 +103,63 @@
         (else (fringe-inner (cdr lista) (cons (car lista) listb)))))
   (reverse (fringe-inner items '())))
 
+;2.29 mobil and branches
+
+(define (make-mobile left right) (list left right))
+(define (make-branch length struct) (list length struct))
+
+;a - getters for mobile and branch
+(define (left-branch mobil) (car mobil))
+(define (right-branch mobil) (car (cdr mobil)))
+(define (branch-length branch) (car branch))
+(define (branch-struct branch) (car (cdr branch)))
+
+;b -- total weight
+(define (total-weight mobil)
+  (+ (total-weight-branch (left-branch mobil))
+     (total-weight-branch (right-branch mobil)))) 
+
+(define (total-weight-branch branch)
+  (if (pair? (branch-struct branch))
+      (total-weight (branch-struct branch))
+      (branch-struct branch)))
+
+;c balanced branch
+(define (torque-calc length weigth)
+  (* length weigth))
+
+(define (branch-torque branch)
+  (* (branch-length branch)
+     ;;calculates the total length atachet to the branch
+     (if (pair? (branch-struct branch))
+                       (total-weight-branch branch)
+                       (branch-struct branch))))
+ 
+(define (is-balanced mobil)
+  (if (= (branch-torque (left-branch mobil)) (branch-torque (right-branch mobil)))
+      #t
+      #f))
+
+(define (is-balanced-branch branch)
+  (if (not (pair? (branch-struct branch)))
+      #t
+      (is-balanced-mobil (branch-struct branch))))
+
+;;works but is ineficient because it goes trough the tree 3 times
+(define (is-balanced-mobil mobil)
+        ;check if the left branch is balanced
+  (cond ((not (is-balanced-branch (left-branch mobil))) #f)
+        ;check if the right branch is balanced
+        ((not (is-balanced-branch (right-branch mobil))) #f)
+        ;;check if the weigth are equal
+        ((not (= (branch-torque (left-branch mobil)) (branch-torque (right-branch mobil)))) #f)
+        ;if the above are false the retur true
+        (else #t)))
+
+(define tester (make-mobile (make-branch 1 30) (make-branch 1 (make-mobile (make-branch 1 10) (make-branch 1 20)))))
+(define teste-balance (make-mobile (make-branch 1 10) (make-branch 1 10)))
+
+
+(branch-torque (left-branch teste-balance))
+(is-balanced-mobil tester)
 
