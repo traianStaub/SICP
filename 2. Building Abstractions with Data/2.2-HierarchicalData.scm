@@ -77,6 +77,7 @@
 (define (square-list-map items)
 (map (lambda (x) (* x x))items))
 
+
 ;2.23 - the for each expresion
 ;;we use the cond and else expresion because in the else body we can have multiple expresions
 (define (for-each-a proc items)
@@ -189,4 +190,51 @@
         (append rest (map (lambda (sub-set)
                             (append (list (car s)) sub-set)) rest)))))
 
+;;2.33
+(define (map p sequence)
+  (accumulate (lambda (x y) (cons (p x) y)) nil sequence))
+
+(define (append seq1 seq2)
+  (accumulate cons seq2 seq1))
+
+(define (length sequence)
+(accumulate (lambda (x y) (+ 1 y)) 0 sequence))
+
+;2.34
+(define (horner-eval x coefficient-sequence)
+  (accumulate (lambda (this-coeff higher-terms) (+ this-coeff (* x higher-terms)))
+              0
+              coefficient-sequence))
+
+;2.35
+(define (count-leaves t)
+  (accumulate + 0 (map (lambda (items)
+                         (if (pair? items)
+                             (count-leaves items)
+                             1))
+                       t))) 
+
+;;2.36
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      nil
+      (cons (accumulate op init (enumerate-first seqs))
+            (accumulate-n op init (remove-first seqs)))))
+
+(define (enumerate-first seq)
+  (if (null? seq)
+      nil
+      (cons (car (car seq)) (enumerate-first (cdr seq)))))
+
+(define (remove-first seq)
+  (if (null? seq)
+      nil
+      (cons (cdr (car seq)) (remove-first (cdr seq)))))
+
+;;the more elegant solution
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      nil
+      (cons (accumulate op init (map car seqs))
+            (accumulate-n op init (map cdr seqs)))))
 
