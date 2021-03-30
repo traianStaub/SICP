@@ -134,11 +134,6 @@
      (if (pair? (branch-struct branch))
                        (total-weight-branch branch)
                        (branch-struct branch))))
- 
-(define (is-balanced mobil)
-  (if (= (branch-torque (left-branch mobil)) (branch-torque (right-branch mobil)))
-      #t
-      #f))
 
 (define (is-balanced-branch branch)
   (if (not (pair? (branch-struct branch)))
@@ -156,3 +151,10 @@
         ;if the above are false the retur true
         (else #t)))
 
+;d if the definition for mobil changes to:
+(define (make-mobile-new left right) (cons left right))
+(define (make-branch-new length structure) (cons length structure))
+
+;we need to only change
+(define (right-branch-new mobil) (cdr mobil))
+(define (branch-struct-new branch) (cdr branch))
