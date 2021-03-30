@@ -158,3 +158,35 @@
 ;we need to only change
 (define (right-branch-new mobil) (cdr mobil))
 (define (branch-struct-new branch) (cdr branch))
+
+;;2.30
+(define (square-tree-no-map tree)
+  (cond ((null? tree) nil)
+        ((not (pair? tree)) (* tree tree))
+        (else (cons (square-tree-no-map (car tree))
+                    (square-tree-no-map (cdr tree))))))
+
+(define (square-tree-map tree)
+  (map (lambda(sub-tree)
+         (if (not (pair? sub-tree))
+             (* sub-tree sub-tree)
+             (square-tree-map sub-tree)))
+        tree)) 
+
+;2.31
+(define (tree-map proc tree)
+  (map (lambda (sub-tree)
+         (if (pair? sub-tree)
+             (tree-map proc sub-tree)
+             (proc sub-tree)))
+       tree))
+
+;2.32
+(define (subsets s)
+  (if (null? s)
+      (list nil)
+      (let ((rest (subsets (cdr s))))
+        (append rest (map (lambda (sub-set)
+                            (append (list (car s)) sub-set)) rest)))))
+
+
