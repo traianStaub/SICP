@@ -252,3 +252,20 @@
   (let ((cols (transpose n)))
     (map (lambda (x) (matrix-*-vector cols x)) m))) 
 
+;2.40
+(define (unique-pairs n) (flatmap (lambda (i)
+                              (map(lambda (j) (list i j))
+                                  (enumerate-interval 1 i)))
+                            (enumerate-interval 1 n)))
+
+;2.41
+(define (unique-triplets n) (flatmap (lambda (i) (flatmap (lambda (j)(map (lambda (k) (list i j k))
+                                          (enumerate-interval 1 (- j 1)))) 
+                      (enumerate-interval 1 (- i 1))))   
+         (enumerate-interval 1 n)))
+
+(define (make-triple-sum triple)
+  (append triple ( list (accumulate + 0 triple))))
+
+(define (triple-sum-to-n n s) (map make-triple-sum (filter (lambda (items) (>= s (accumulate + 0 items))) (unique-triplets n))))
+
