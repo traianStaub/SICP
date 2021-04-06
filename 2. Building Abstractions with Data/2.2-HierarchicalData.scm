@@ -269,3 +269,16 @@
 
 (define (triple-sum-to-n n s) (map make-triple-sum (filter (lambda (items) (>= s (accumulate + 0 items))) (unique-triplets n))))
 
+;;2.54 equality of lists
+(define (equal? items1 items2)
+  (cond ((and (null? items1) (null? items2)) true)
+        ;;if the car of the lists are one element
+        ((and (not (pair? (car items1))) (not (pair? (car items2)))) (if (eq? (car items1) (car items2))
+                                                                         (equal? (cdr items1) (cdr items2))
+                                                                         false))
+        ;;if the car of the list are a list
+        ((and (pair? (car items1)) (pair? (car items2))) (if (equal? (car items1) (car items2))
+                                                             (equal? (cdr items1) (cdr items2))
+                                                             false))
+        (else false)))
+
